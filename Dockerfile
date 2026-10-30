@@ -5,7 +5,8 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests && \
+      mv target/*.jar target/app.jar
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
