@@ -7,13 +7,13 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
-RUN ls -l target/ && \
-    cp target/*.jar /app/app.jar
+RUN cp target/*.jar app.jar
+
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/app.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app-jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
