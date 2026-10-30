@@ -25,13 +25,13 @@ public class ProductController {
     }
 
     // Rota para Favorita/Desfavoritar (POST)
-    @PostMapping
+    @PostMapping("/{id}/favorite")
     public boolean toggleFavorite(@PathVariable int id){
         return catalog.toggleFavorite(id);
     }
 
     // Rota para Listar Favoritos
-    @GetMapping
+    @GetMapping("/favorites")
     public List<Product> getFavorites(){
         return catalog.getFavsId();
     }
