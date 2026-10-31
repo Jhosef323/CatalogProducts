@@ -19,9 +19,9 @@ public class ProductController {
 
     // Rota para Adicionar Produto (POST)
     @PostMapping
-    public String addProduct(@RequestBody ProductRequest request){
+    public Map<String, String> addProduct(@RequestBody ProductRequest request){
         catalog.addProduct(request.getName(), request.getPrice());
-        return "Produto adicinado com sucesso!";
+        return Map.of("message", "Produto adicionado com sucesso!");
     }
 
     // Rota para Favorita/Desfavoritar (POST)
