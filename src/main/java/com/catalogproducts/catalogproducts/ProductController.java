@@ -26,8 +26,17 @@ public class ProductController {
 
     // Rota para Favorita/Desfavoritar (POST)
     @PostMapping("/{id}/favorite")
-    public boolean toggleFavorite(@PathVariable int id){
-        return catalog.toggleFavorite(id);
+    public Map<String, Object> toggleFavorite(@PathVariable int id){
+
+        boolean favorite = catalog.toggleFavorite(id);
+
+        return Map.of(
+                "id", id,
+                "favorite", favorite,
+                "message", favorite
+                        ? "Produto favoritado com sucesso!"
+                        : "Produto desfavoritado com sucesso!"
+        );
     }
 
     // Rota para Listar Favoritos
