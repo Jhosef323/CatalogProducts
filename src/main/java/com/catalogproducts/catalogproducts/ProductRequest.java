@@ -1,6 +1,6 @@
 package com.catalogproducts.catalogproducts;
 
-class ProductRequest {
+public class ProductRequest {
     private String name;
     private double price;
 
