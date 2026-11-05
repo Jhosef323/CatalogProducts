@@ -1,28 +1,43 @@
 package com.catalogproducts.catalogproducts;
 
 import java.util.Objects;
+import jakarta.persistence.*;
 
+
+@Entity
+@Table(name = "products")
 public class Product {
 
-    private final String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private double price;
-    private final int id;
+
+    @Column
+    private boolean favorite = false;
+
+    public Product(){}
 
     public Product (String name, double price){
         if (name == null || name.trim().isEmpty()){
             throw new IllegalArgumentException("O nome não pode ser vazio.");
         }
-        this.name = name;
-        setPrice(price);
-        this.id = IdGenerator.gerarIdProduct();
-    }
 
-    public void setPrice(double price) {
         if(price <= 0){
             throw new IllegalArgumentException("Preço não pode ser 0 ou negativo.");
+
         }
+
+        this.name = name;
         this.price = price;
+
     }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -52,10 +67,25 @@ public class Product {
 
     public int getId(){return id;}
 
-    @Override
-    public String toString(){
-        return "Produto: " + this.name
-                + ", Preço: " + this.price
-                + ", ID: " + this.id;
+    public boolean isFavorite() {return favorite;}
+
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()){
+            throw new IllegalArgumentException("O nome não pode ser vazio.");
+        }
+
+        this.name = name;
     }
+
+    public void setPrice(double price) {
+        if(price <= 0){
+            throw new IllegalArgumentException("Preço não pode ser 0 ou negativo.");
+        }
+        this.price = price;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
 }
