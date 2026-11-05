@@ -7,46 +7,65 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
+@CrossOrigin(origins = "*")
 public class ProductController {
-    // Instancia o catálogo (em um cenário real, deveria estar injetado ou em banco de dados)
-    private final CatalogProducts catalog = new CatalogProducts();
 
-    // Rota para listar o Catalogo (GET)
+    private final CatalogProducts catalog;
+
+    public ProductController(CatalogProducts catalog){
+        this.catalog = catalog;
+    }
+
     @GetMapping
-    public Map<Integer, Product> getCatalog(){
+    public List<Product> getCatalog(){
         return catalog.showCatalog();
     }
 
     // Rota para Adicionar Produto (POST)
     @PostMapping
-    public Map<String, String> addProduct(@RequestBody ProductRequest request){
-        catalog.addProduct(request.getName(), request.getPrice());
-        return Map.of("message", "Produto adicionado com sucesso!");
-    }
-
-    // Rota para Favorita/Desfavoritar (POST)
-    @PostMapping("/{id}/favorite")
-    public Map<String, Object> toggleFavorite(@PathVariable int id){
-
-        boolean favorite = catalog.toggleFavorite(id);
-
-        return Map.of(
-                "id", id,
-                "favorite", favorite,
-                "message", favorite
-                        ? "Produto favoritado com sucesso!"
-                        : "Produto desfavoritado com sucesso!"
+    public Product addProduct(@RequestBody ProductRequest request){
+        return catalog.addProduct(request.getName(),
+                request.getPrice()
         );
     }
 
-    // Rota para Listar Favoritos
+    @PostMapping("/{id}/favorite")
+    public boolean toggleFavorite(@PathVariable int id){
+
+        return catalog.toggleFavorite(id);
+    }
+
     @GetMapping("/favorites")
     public List<Product> getFavorites(){
         return catalog.getFavsId();
     }
+
+    @GetMapping({"/{id}"})
+    public Product findProduct(@PathVariable int id){
+        return catalog.findProductId(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean removeProduct(@PathVariable int id){
+        return catalog.removeProduct(id);
+    }
+
+    @GetMapping("/search")
+    public List<Product> searchProduct(@RequestParam String name){
+        return catalog.findProductName(name);
+    }
+
+    @GetMapping("/sort/price")
+    public Map<Integer, Product> sortPrice(){
+        return catalog.ordPrice();
+    }
+
+    @GetMapping("/sort/name")
+    public Map<Integer, Product> sortName(){
+        return catalog.ordName();
+    }
 }
 
-// Classe auxiliar para receber o JSON do Bubble
 class ProductRequest{
     private String name;
     private double price;
