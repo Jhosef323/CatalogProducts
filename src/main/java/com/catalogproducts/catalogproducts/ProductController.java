@@ -55,6 +55,16 @@ public class ProductController {
         return catalog.findProductName(name);
     }
 
+    @GetMapping("/above-price")
+    public List<Product> abovePrice(@RequestParam double price) {
+        return catalog.abovePrice(price);
+    }
+
+    @GetMapping("/below-price")
+    public List<Product> belowPrice(@RequestParam double price) {
+        return catalog.belowPrice(price);
+    }
+
     @GetMapping("/sort/price")
     public Map<Integer, Product> sortPrice(){
         return catalog.ordPrice();
